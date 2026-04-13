@@ -1,0 +1,349 @@
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #d4a843;
+  --gold-bright: #ffd700;
+  --bg: #0a0a0a;
+  --text-dim: rgba(212, 168, 67, 0.25);
+  --text-mid: rgba(212, 168, 67, 0.5);
+}
+
+html, body {
+  height: 100%; width: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--gold);
+  font-family: 'Georgia', serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background-image: url('assets/1. Dark cosmic texture backdrop.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* ── Phases ── */
+.phase {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+.phase.active { opacity: 1; pointer-events: auto; }
+
+/* ══════════════════════════════════════
+   Phase 1: Damru + Wheel
+   ══════════════════════════════════════ */
+#phase-damru {
+  justify-content: flex-end;
+  padding-bottom: 4vh;
+}
+
+#entry-text {
+  position: absolute;
+  top: 2.5vh; left: 0; right: 0;
+  text-align: center;
+  padding: 0 1.5rem;
+  z-index: 5;
+}
+#entry-text .line1 {
+  font-size: clamp(1.8rem, 7vw, 2.6rem);
+  color: var(--gold-bright);
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(255,215,0,0.5);
+}
+#entry-text .line2 {
+  font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.06em;
+}
+#entry-text .line3 {
+  font-size: clamp(0.9rem, 3.8vw, 1.1rem);
+  color: var(--text-mid);
+  line-height: 1.55;
+}
+
+/* Name wheel */
+#name-wheel {
+  position: absolute;
+  top: 13vh; left: 0; right: 0;
+  height: 42vh;
+  overflow: hidden;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 25%, black 50%, transparent 100%);
+}
+
+#name-track {
+  display: flex; flex-direction: column; align-items: center;
+  will-change: transform;
+}
+
+#name-track .name-item {
+  font-size: 1.5rem;
+  padding: 0.7rem 0;
+  color: var(--text-dim);
+  transition: color 0.15s, transform 0.15s, opacity 0.15s;
+  white-space: nowrap;
+  opacity: 0.3;
+}
+#name-track .name-item.center {
+  color: var(--gold-bright);
+  font-size: 2.2rem;
+  opacity: 1;
+  text-shadow: 0 0 24px rgba(255,215,0,0.6);
+  transform: scale(1.1);
+}
+#name-track .name-item.near {
+  color: var(--text-mid);
+  font-size: 1.7rem;
+  opacity: 0.5;
+}
+
+#damru-highlight {
+  position: absolute;
+  top: calc(13vh + 21vh - 1.6rem);
+  left: 50%; transform: translateX(-50%);
+  width: 70%; height: 3.4rem;
+  border-top: 1px solid rgba(212,168,67,0.1);
+  border-bottom: 1px solid rgba(212,168,67,0.1);
+  pointer-events: none;
+}
+
+/* Damru — big, no empty space (SVG) */
+#damru-btn {
+  background: none; border: none; cursor: pointer;
+  position: relative; z-index: 10;
+  width: 52vw; max-width: 220px;
+  height: auto;
+  aspect-ratio: 120 / 140;
+  display: flex; align-items: center; justify-content: center;
+  animation: damruPulse 2.5s ease-in-out infinite;
+}
+.damru-svg {
+  width: 100%; height: 100%;
+  position: absolute;
+  transition: opacity 0.4s;
+}
+.damru-svg.hidden { opacity: 0; }
+
+@keyframes damruPulse {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255,215,0,0.2)); }
+  50% { transform: scale(1.07); filter: drop-shadow(0 0 28px rgba(255,215,0,0.5)); }
+}
+
+#damru-btn.shake {
+  animation: damruShake 0.15s ease-in-out 3 !important;
+}
+@keyframes damruShake {
+  0%, 100% { transform: rotate(0deg) scale(1.1); }
+  25% { transform: rotate(18deg) scale(1.15); }
+  75% { transform: rotate(-18deg) scale(1.15); }
+}
+
+#damru-btn.glow {
+  animation: damruGlowPop 0.6s ease forwards !important;
+}
+#damru-btn.glow .damru-svg:last-child { opacity: 1; }
+#damru-btn.glow .damru-svg:first-child { opacity: 0; }
+@keyframes damruGlowPop {
+  0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(255,215,0,0.3)); }
+  50% { transform: scale(1.25); filter: drop-shadow(0 0 50px rgba(255,215,0,0.8)); }
+  100% { transform: scale(1.08); filter: drop-shadow(0 0 35px rgba(255,215,0,0.5)); }
+}
+
+/* ══════════════════════════════════════
+   Phase 2: Recognition — responsive
+   ══════════════════════════════════════ */
+#recog-content {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 0 2rem;
+  width: 100%;
+  animation: fadeInUp 0.8s ease both;
+}
+#recog-greeting {
+  font-size: clamp(1.6rem, 7vw, 2.8rem);
+  color: var(--gold-bright);
+  text-shadow: 0 0 30px rgba(255,215,0,0.5);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 90vw;
+  line-height: 1.3;
+}
+#recog-sub {
+  font-size: clamp(0.85rem, 3.5vw, 1.1rem);
+  color: var(--text-mid);
+  letter-spacing: 0.1em;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════════════════
+   Phase 3: Journey
+   ══════════════════════════════════════ */
+#phase-journey {
+  justify-content: flex-start;
+  padding-top: 1.5vh;
+}
+
+#journey-scene {
+  position: relative;
+  width: 90vw; max-width: 360px;
+  height: 72vh;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+#journey-message {
+  text-align: center;
+  font-size: clamp(0.92rem, 3.8vw, 1.08rem);
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  line-height: 1.65;
+  padding: 0 1.5rem;
+  margin-top: 2vh;
+  flex-shrink: 0;
+  opacity: 0;
+  animation: fadeInSlow 1.2s 2s ease forwards;
+  text-shadow: 0 0 10px rgba(255,215,0,0.2);
+}
+@keyframes fadeInSlow { to { opacity: 1; } }
+
+#route-svg {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+}
+
+#start-label, #end-label {
+  position: absolute;
+  font-size: 0.72rem;
+  color: var(--text-mid);
+  letter-spacing: 0.1em;
+}
+#start-label { bottom: 6px; left: 8px; }
+#end-label { top: 6px; right: 0; text-align: right; }
+
+/* Bus SVG — positioned entirely by JS */
+#bus {
+  position: absolute;
+  width: 70px; height: 42px;
+  filter: drop-shadow(0 0 8px rgba(255,215,0,0.4));
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: center center;
+}
+
+#bus.filling {
+  animation: busFillGlow 1.2s ease forwards;
+}
+@keyframes busFillGlow {
+  0% { filter: drop-shadow(0 0 4px rgba(255,215,0,0.2)); transform: scale(0.9); }
+  50% { filter: drop-shadow(0 0 24px rgba(255,215,0,0.7)); transform: scale(1.08); }
+  100% { filter: drop-shadow(0 0 14px rgba(255,215,0,0.5)); transform: scale(1); }
+}
+
+/* Passengers appear during fill */
+#bus .passenger { transition: opacity 0.4s ease; }
+#bus.passengers-in .passenger { opacity: 0.9; }
+
+/* Adiyogi — inside the scene, top-right */
+#adiyogi {
+  position: absolute;
+  top: -10px; right: -10px;
+  width: 180px; height: 180px;
+  object-fit: cover;
+  object-position: center 35%;
+  border-radius: 50%;
+  opacity: 0.3;
+  transition: opacity 1.2s ease, filter 1.2s ease, transform 1.2s ease;
+}
+#adiyogi.glow {
+  opacity: 1;
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 40px rgba(255,215,0,0.6)) drop-shadow(0 0 80px rgba(255,215,0,0.2));
+}
+
+/* ══════════════════════════════════════
+   Phase 4: Prasadam — centered
+   ══════════════════════════════════════ */
+#phase-prasadam {
+  gap: 1.2rem;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 3vh 1.5rem;
+}
+
+#prasadam-img {
+  width: 36vw; max-width: 150px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(255,215,0,0.3));
+  animation: prasadamFloat 3s ease-in-out infinite;
+}
+@keyframes prasadamFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+#sadhguru-quote {
+  max-width: 88vw;
+  padding: 0 0.5rem;
+  border: none;
+  margin: 0;
+}
+#sadhguru-quote p {
+  font-size: clamp(0.78rem, 3.2vw, 0.95rem);
+  color: var(--text-mid);
+  font-style: italic;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+}
+#sadhguru-quote cite {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--gold);
+  font-style: normal;
+  letter-spacing: 0.1em;
+}
+
+#prasadam-text {
+  font-size: clamp(1.2rem, 5vw, 1.6rem);
+  text-align: center;
+  text-shadow: 0 0 16px rgba(255,215,0,0.3);
+  line-height: 1.4;
+}
+
+#prasadam-btn {
+  display: inline-block;
+  padding: 0.9rem 2.6rem;
+  border: 1px solid var(--gold);
+  color: var(--gold-bright);
+  text-decoration: none;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  border-radius: 2px;
+  transition: background 0.3s, box-shadow 0.3s, transform 0.2s;
+  animation: btnPulse 2s ease-in-out infinite;
+}
+@keyframes btnPulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(255,215,0,0); }
+  50% { box-shadow: 0 0 20px rgba(255,215,0,0.2); }
+}
+#prasadam-btn:active {
+  background: rgba(212,168,67,0.15);
+  transform: scale(0.97);
+}
