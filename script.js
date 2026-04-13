@@ -16,7 +16,7 @@
   const ITEM_H = 52;
   let pool = [];
   let scrollY = 0;
-  const speed = 1.6;
+  const speed = 3.0;
   let running = true;
 
   function buildTrack() {
