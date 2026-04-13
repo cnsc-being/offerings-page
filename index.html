@@ -1,238 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Offering</title>
-
-<style>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: black;
-  font-family: sans-serif;
-}
-
-.container {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-}
-
-.bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.overlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.35);
-}
-
-/* Offerings */
-.offerings {
-  position: absolute;
-  bottom: 10px;
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px;
-  z-index: 2;
-  transition: opacity 0.6s ease;
-}
-
-.flower-btn {
-  background: rgba(255,255,255,0.12);
-  color: white;
-  padding: 10px 14px;
-  border-radius: 20px;
-  font-size: 13px;
-  border: 1px solid rgba(255,255,255,0.25);
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-}
-
-/* 🌸 Realistic Flower */
-.flower {
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  z-index: 3;
-  pointer-events: none;
-  opacity: 0.95;
-}
-
-/* Glow at feet */
-.glow {
-  position: absolute;
-  width: 140px;
-  height: 70px;
-  bottom: 18%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: radial-gradient(circle, rgba(255,215,120,0.7) 0%, transparent 70%);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  z-index: 2;
-}
-
-/* CTA */
-.cta {
-  position: absolute;
-  bottom: 90px;
-  width: 100%;
-  text-align: center;
-  opacity: 0;
-  transition: 1s;
-  z-index: 2;
-}
-
-.cta button {
-  background: rgba(255,255,255,0.2);
-  color: white;
-  padding: 12px 20px;
-  border-radius: 25px;
-  border: 1px solid white;
-  cursor: pointer;
-}
-
-.show {
-  opacity: 1;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Offering — Electronic City to Adiyogi</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <!-- Phase 1: Damru + Name Wheel -->
+  <section id="phase-damru" class="phase active">
+    <div id="entry-text">
+      <p class="line1">Game Time !!!</p>
+      <p class="line2">Be super attentive…</p>
+      <p class="line3">Offer a Naadh as your name appears — by tapping on the Damru.</p>
+    </div>
+    <div id="name-wheel">
+      <div id="name-track"></div>
+    </div>
+    <div id="damru-highlight"></div>
+    <button id="damru-btn" aria-label="Tap Damru">
+      <!-- Idle damru SVG -->
+      <svg class="damru-svg" id="damru-idle" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="dg1" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#ffd700"/>
+            <stop offset="100%" stop-color="#8b6914"/>
+          </radialGradient>
+          <radialGradient id="dglow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.25)"/>
+            <stop offset="100%" stop-color="rgba(255,215,0,0)"/>
+          </radialGradient>
+        </defs>
+        <!-- Outer glow -->
+        <ellipse cx="60" cy="70" rx="55" ry="65" fill="url(#dglow)"/>
+        <!-- Top cone -->
+        <path d="M60 18 L28 62 L92 62 Z" fill="url(#dg1)" stroke="#b8860b" stroke-width="1.5"/>
+        <!-- Bottom cone -->
+        <path d="M60 122 L28 78 L92 78 Z" fill="url(#dg1)" stroke="#b8860b" stroke-width="1.5"/>
+        <!-- Center band -->
+        <rect x="42" y="62" width="36" height="16" rx="3" fill="#b8860b" stroke="#ffd700" stroke-width="1"/>
+        <rect x="46" y="65" width="28" height="10" rx="2" fill="#d4a843"/>
+        <!-- Strings -->
+        <line x1="42" y1="70" x2="22" y2="58" stroke="#d4a843" stroke-width="1.2"/>
+        <line x1="78" y1="70" x2="98" y2="58" stroke="#d4a843" stroke-width="1.2"/>
+        <!-- Beads -->
+        <circle cx="20" cy="56" r="4" fill="#ffd700"/>
+        <circle cx="100" cy="56" r="4" fill="#ffd700"/>
+        <!-- Top trident hint -->
+        <line x1="60" y1="18" x2="60" y2="4" stroke="#d4a843" stroke-width="1.5"/>
+        <line x1="54" y1="8" x2="60" y2="4" stroke="#d4a843" stroke-width="1"/>
+        <line x1="66" y1="8" x2="60" y2="4" stroke="#d4a843" stroke-width="1"/>
+      </svg>
+      <!-- Active/glowing damru SVG -->
+      <svg class="damru-svg hidden" id="damru-active" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="dg2" cx="50%" cy="40%" r="60%">
+            <stop offset="0%" stop-color="#fff8dc"/>
+            <stop offset="50%" stop-color="#ffd700"/>
+            <stop offset="100%" stop-color="#b8860b"/>
+          </radialGradient>
+          <radialGradient id="dglow2" cx="50%" cy="50%" r="55%">
+            <stop offset="0%" stop-color="rgba(255,215,0,0.45)"/>
+            <stop offset="70%" stop-color="rgba(255,215,0,0.1)"/>
+            <stop offset="100%" stop-color="rgba(255,215,0,0)"/>
+          </radialGradient>
+        </defs>
+        <ellipse cx="60" cy="70" rx="58" ry="68" fill="url(#dglow2)"/>
+        <path d="M60 18 L28 62 L92 62 Z" fill="url(#dg2)" stroke="#ffd700" stroke-width="2"/>
+        <path d="M60 122 L28 78 L92 78 Z" fill="url(#dg2)" stroke="#ffd700" stroke-width="2"/>
+        <rect x="42" y="62" width="36" height="16" rx="3" fill="#ffd700" stroke="#fff8dc" stroke-width="1.5"/>
+        <rect x="46" y="65" width="28" height="10" rx="2" fill="#ffe066"/>
+        <line x1="42" y1="70" x2="22" y2="58" stroke="#ffd700" stroke-width="1.5"/>
+        <line x1="78" y1="70" x2="98" y2="58" stroke="#ffd700" stroke-width="1.5"/>
+        <circle cx="20" cy="56" r="5" fill="#fff8dc"/>
+        <circle cx="100" cy="56" r="5" fill="#fff8dc"/>
+        <line x1="60" y1="18" x2="60" y2="4" stroke="#ffd700" stroke-width="2"/>
+        <line x1="54" y1="8" x2="60" y2="4" stroke="#ffd700" stroke-width="1.2"/>
+        <line x1="66" y1="8" x2="60" y2="4" stroke="#ffd700" stroke-width="1.2"/>
+      </svg>
+    </button>
+  </section>
 
-<div class="container">
+  <!-- Phase 2: Recognition -->
+  <section id="phase-recognition" class="phase">
+    <div id="recog-content">
+      <div id="recog-greeting"></div>
+      <div id="recog-sub">This campaign is to reach out the meditators to support them in taking next step in their journey.</div>
+    </div>
+  </section>
 
-  <img src="sg2.jpg" class="bg"/>
-  <div class="overlay"></div>
+  <!-- Phase 3: Journey -->
+  <section id="phase-journey" class="phase">
+    <div id="journey-scene">
+      <div id="start-label">Electronic City</div>
+      <svg id="route-svg" viewBox="0 0 300 500" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="goldGrad" x1="0" y1="1" x2="0" y2="0">
+            <stop offset="0%" stop-color="#b8860b"/>
+            <stop offset="100%" stop-color="#ffd700"/>
+          </linearGradient>
+        </defs>
+        <path id="route-path" d="M 40,470 C 40,350 260,370 260,230 S 150,30 150,30" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" stroke-dasharray="8 6" opacity="0.6"/>
+      </svg>
+      <!-- Bus as inline SVG — no empty space -->
+      <svg id="bus" viewBox="0 0 60 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="busG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ffd700"/>
+            <stop offset="100%" stop-color="#b8860b"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="4" width="56" height="24" rx="5" fill="url(#busG)" stroke="#d4a843" stroke-width="1.5"/>
+        <rect x="6" y="8" width="10" height="8" rx="2" fill="#0a0a0a" opacity="0.6"/>
+        <rect x="19" y="8" width="10" height="8" rx="2" fill="#0a0a0a" opacity="0.6"/>
+        <rect x="32" y="8" width="10" height="8" rx="2" fill="#0a0a0a" opacity="0.6"/>
+        <rect x="45" y="8" width="10" height="8" rx="2" fill="#0a0a0a" opacity="0.4"/>
+        <rect x="2" y="20" width="56" height="3" fill="#d4a843" opacity="0.5"/>
+        <circle cx="14" cy="30" r="4.5" fill="#333" stroke="#d4a843" stroke-width="1"/>
+        <circle cx="46" cy="30" r="4.5" fill="#333" stroke="#d4a843" stroke-width="1"/>
+        <!-- Passengers (heads in windows) -->
+        <circle class="passenger" cx="11" cy="11" r="2.5" fill="#ffd700" opacity="0"/>
+        <circle class="passenger" cx="24" cy="11" r="2.5" fill="#ffd700" opacity="0"/>
+        <circle class="passenger" cx="37" cy="11" r="2.5" fill="#ffd700" opacity="0"/>
+      </svg>
+      <img id="adiyogi" src="assets/2. Golden Adiyogi silhouette divine calm.png" alt="Adiyogi">
+      <div id="end-label">Sannidhi — Adiyogi</div>
+    </div>
+    <p id="journey-message">May we reach all those, who shall come<br>for this Sadhana Seva Sangha Trip.</p>
+  </section>
 
-  <div class="glow" id="glow"></div>
+  <!-- Phase 4: Prasadam -->
+  <section id="phase-prasadam" class="phase">
+    <img id="prasadam-img" src="assets/7. Golden leaves in dark serenity.png" alt="Prasadam">
+    <blockquote id="sadhguru-quote">
+      <p>&ldquo;No spiritual process will happen to any human being unless he becomes willing. Thus, volunteering is a tremendous tool in creating that willingness.&rdquo;</p>
+      <cite>— Sadhguru</cite>
+    </blockquote>
+    <div id="prasadam-text">Let's offer this...</div>
+    <a id="prasadam-btn" href="#" target="_blank" rel="noopener">Press here to offer</a>
+  </section>
 
-  <div class="offerings" id="offerings"></div>
+  <audio id="damru-sound" preload="auto" src="https://cdn.freesound.org/previews/411/411089_5121236-lq.mp3"></audio>
 
-  <div class="cta" id="cta">
-    <button onclick="goToLink()">Continue Your Offering →</button>
-  </div>
-
-</div>
-
-<script src="data.js"></script>
-
-<script>
-let selectedLink = "";
-const container = document.getElementById("offerings");
-
-// Create buttons
-offeringsData.forEach(item => {
-  const btn = document.createElement("div");
-  btn.className = "flower-btn";
-  btn.innerText = item.name;
-  btn.onclick = () => offer(item.link);
-  container.appendChild(btn);
-});
-
-// 🌸 Create realistic flower
-function createFlower(startX) {
-  const flower = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  flower.setAttribute("viewBox", "0 0 24 24");
-  flower.classList.add("flower");
-
-  // multi-petal flower
-  flower.innerHTML = `
-    <g>
-      <ellipse cx="12" cy="6" rx="3" ry="6" fill="#ff9eb5"/>
-      <ellipse cx="18" cy="12" rx="3" ry="6" transform="rotate(90 18 12)" fill="#ffb3c7"/>
-      <ellipse cx="6" cy="12" rx="3" ry="6" transform="rotate(90 6 12)" fill="#ffc2d1"/>
-      <ellipse cx="12" cy="18" rx="3" ry="6" fill="#ff8fab"/>
-      <circle cx="12" cy="12" r="2" fill="#ffd166"/>
-    </g>
-  `;
-
-  flower.style.left = startX + "px";
-  flower.style.top = "-40px";
-
-  document.body.appendChild(flower);
-
-  // 🎯 target (feet)
-  const targetX = window.innerWidth / 2 + (Math.random() * 120 - 60);
-  const targetY = window.innerHeight * 0.85;
-
-  const duration = 2200 + Math.random() * 800;
-  const startTime = performance.now();
-
-  function animate(time) {
-    const t = (time - startTime) / duration;
-
-    if (t >= 1) {
-      flower.remove();
-      flashGlow();
-      return;
-    }
-
-    // gravity feel
-    const ease = t * t;
-
-    const x = startX + (targetX - startX) * t + Math.sin(t * 6) * 25;
-    const y = ease * targetY;
-
-    flower.style.transform = `
-      translate(${x - startX}px, ${y}px)
-      rotate(${t * 360}deg)
-    `;
-
-    requestAnimationFrame(animate);
-  }
-
-  requestAnimationFrame(animate);
-}
-
-// glow effect
-function flashGlow() {
-  const glow = document.getElementById("glow");
-  glow.style.opacity = 1;
-  setTimeout(() => glow.style.opacity = 0, 500);
-}
-
-function offer(link) {
-  selectedLink = link;
-
-  // fade names
-  container.style.opacity = "0";
-  container.style.pointerEvents = "none";
-
-  // 🌧 continuous natural shower from TOP
-  let count = 0;
-  const interval = setInterval(() => {
-    createFlower(Math.random() * window.innerWidth);
-    count++;
-    if (count > 70) clearInterval(interval);
-  }, 60);
-
-  setTimeout(() => {
-    document.getElementById("cta").classList.add("show");
-  }, 2600);
-}
-
-// function goToLink() {
-//   if (selectedLink) {
-//     window.location.href = selectedLink;
-//   }
-// }
-function goToLink() {
-  if (selectedLink) {
-    window.open(selectedLink, "_blank");
-  }
-}
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>
